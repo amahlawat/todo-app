@@ -1,0 +1,19 @@
+.centered{
+    text-align: center;
+}
+button{
+    color: #fff;
+    background-color: #0062cc;
+    height: 50px;
+    width: 100px;
+    border-radius: 5px;
+    border: solid 1px #005cbf;
+    cursor: pointer;
+}
+button:active, button:hover, button.active{
+    background-color: #fff;
+    color: #0062cc;
+}
+.fa{
+    cursor: pointer;
+}

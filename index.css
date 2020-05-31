@@ -1,0 +1,37 @@
+.root--div{
+    padding: 20px;
+    padding-left: 250px;
+    padding-right: 250px;
+}
+.input--section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.form--btn{
+    margin-left: 20px;
+}
+.todo--data{
+    background: #0062cc;
+}
+.todo--display--data{
+    color: #fff;
+    list-style-type: decimal;
+    padding: 20px;
+}
+textarea{
+    padding: 5px;
+}
+.main-heading, .heading-msg{
+    color: #0062cc;
+}
+.fa-edit{
+    font-size:24px;
+    color:chartreuse;
+    cursor: pointer;
+}
+.fa-remove{
+    font-size:24px;
+    color:red;
+    cursor: pointer;
+}
