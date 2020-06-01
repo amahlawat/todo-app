@@ -42,3 +42,15 @@ textarea{
     width: 100px;
     border: solid 1px #005cbf;
 }
+@media (min-width:500px){
+    .root--div {
+        padding-left: 150px;
+        padding-right: 150px;
+    }
+}
+@media (max-width:499px){
+    .root--div {
+        padding-left: 150px;
+        padding-right: 150px;
+    }
+}
