@@ -35,3 +35,10 @@ textarea{
     color:red;
     cursor: pointer;
 }
+.form--btn{
+    color: #fff;
+    background-color: #0062cc;
+    height: 50px;
+    width: 100px;
+    border: solid 1px #005cbf;
+}

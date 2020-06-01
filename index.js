@@ -3,8 +3,8 @@ class Todo{
     constructor(){
         this.rootElement = document.getElementById('root');
         this.todoData = [
-            "i am learning object oriented javascript",
-            "This is a beautiful day,"
+            'i am learning object oriented javascript',
+            'This is a beautiful day'
         ];
     }
 
@@ -29,6 +29,8 @@ class Todo{
             this.todoData.push(task);
             document.getElementById("todo-input").value = "";
             this.bindTodoData();
+            this.removeTask();
+            this.editTask();
             // console.log(this.todoData)
         });
     }
@@ -41,8 +43,12 @@ class Todo{
                 dataComp.push(`
                     <li id="task-${index}">
                         ${task}&nbsp; 
-                        <i class="fa fa-edit task-edit" id="task-edit-${index}"></i>&nbsp;
-                        <i class="fa fa-remove task-remove" id="task-remove-${index}"></i>
+                        <button class="func-btn">
+                            <i class="fa fa-edit task-edit" id="task-edit-${index}"></i>
+                        </button>&nbsp;
+                        <button class="func-btn">
+                            <i class="fa fa-remove task-remove" id="task-remove-${index}"></i>
+                        </button>
                     </li>`
                 )
             })
@@ -58,7 +64,7 @@ class Todo{
             button.addEventListener("click", (event) => {
                 let index = (event.target.id).replace("task-remove-", "");
                 let updatedTask = this.todoData;
-                updatedTask.splice(index);
+                updatedTask.splice(index, 1);
                 this.todoData = updatedTask;
                 this.bindTodoData();
             })    
@@ -71,25 +77,28 @@ class Todo{
         for(let button of editButtons){
             button.addEventListener("click", (event) => {
                 let index = (event.target.id).replace("task-edit-", "");
+                // console.log("index ", index);
                 let value = this.todoData[index];
+                // console.log("value ", value);
                 document.getElementById("task-"+index).innerHTML = `
-                    <textarea cols="70" rows="2" id="task-update-text-${index}" value=${value}></textarea>
-                    <i class="fa fa-check-circle task-update" id="task-update-${index}"></i>
+                    <textarea cols="70" rows="2" id="task-update-text-${index}">${value}</textarea>
+                    <button class="func-btn">
+                        <i class="fa fa-check-circle task-update" id="task-update-${index}"></i>
+                    </button>
                 `;
+                // now update a task
+                const taskUpdateButton = document.querySelector("#task-update-"+index)
+                    taskUpdateButton.addEventListener("click", (event) => {
+                        console.log("clicked");
+                        let index = (event.target.id).replace("task-update-", "");
+                        console.log("index ", index);
+                        let value = document.getElementById("task-update-text-"+index).value;
+                        console.log("value ", value);
+                        this.todoData[index] = value;
+                        this.bindTodoData();
+                    })
             })
         }
-
-        // now update a task
-        const updateButtons = document.querySelectorAll(".task-update")
-        for(let button of updateButtons){
-            button.addEventListener("click", (event) => {
-                let index = (event.target.id).replace("task-update-", "");
-                let value = document.getElementById("task-update-text-"+index).value;
-                console.log("index ", index, "value ", value);
-                this.todoData[index] = value;
-                this.bindTodoData();
-            })
-        }        
     }
 }
 
@@ -98,3 +107,5 @@ todo.mainComponent();
 todo.bindTodoData();
 todo.removeTask();
 todo.editTask();
+
+var todoData = todo.todoData;
