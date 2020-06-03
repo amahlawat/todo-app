@@ -12,11 +12,11 @@
     margin-left: 20px;
 }
 .todo--data{
-    background: #0062cc;
+    /* background: lightskyblue; */
 }
 .todo--display--data{
-    color: #fff;
-    list-style-type: decimal;
+    /* color: #fff; */
+    list-style-type: none;
     padding: 20px;
 }
 textarea{
@@ -30,11 +30,6 @@ textarea{
     color:chartreuse;
     cursor: pointer;
 }
-.fa-remove{
-    font-size:24px;
-    color:red;
-    cursor: pointer;
-}
 .form--btn{
     color: #fff;
     background-color: #0062cc;
@@ -42,13 +37,31 @@ textarea{
     width: 100px;
     border: solid 1px #005cbf;
 }
-@media (min-width:500px){
-    .root--div {
-        padding-left: 150px;
-        padding-right: 150px;
-    }
+.func--btn{
+    height: 40px;
+    width: 70px;
+    color: #fff;
+    background-color: #0062cc;
+    border: solid 1px #005cbf;
 }
-@media (max-width:499px){
+.form--text{
+    border: solid 1px #000;
+}
+.completed{
+    text-decoration: line-through;
+}
+.complete-task{
+    width: 25px;
+    height: 25px;
+}
+.text{
+    background-color: #0062cc;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+@media (min-width:500px){
     .root--div {
         padding-left: 150px;
         padding-right: 150px;

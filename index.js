@@ -2,15 +2,25 @@
 class Todo{
     constructor(){
         this.rootElement = document.getElementById('root');
-        this.todoData = [
-            'i am learning object oriented javascript',
-            'This is a beautiful day'
-        ];
+        // localStorage.setItem("todos", 
+        //     JSON.stringify([
+        //         {
+        //             "id": "task1",
+        //             "value": "i am learning object oriented javascript",
+        //             "completed": false
+        //         },
+        //         {
+        //             "id": "task2",
+        //             "value": "This is a beautiful day",
+        //             "completed": false
+        //         }
+        //     ])
+        // );
     }
 
     mainComponent(){
         this.rootElement.innerHTML = `
-        <h1 class="centered main-heading">Todo App</h1>
+        <h1 class="centered main-heading">Todos</h1>
         <h5 class="heading-msg">this app is developed in object-oriented javascript</h5>
         <div class="todo--app">
             <div class="input--section">
@@ -26,29 +36,37 @@ class Todo{
         document.getElementById('save-btn').addEventListener('click', () => {
             // save the submitted task in todoData array
             let task = document.getElementById("todo-input").value;
-            this.todoData.push(task);
+            let updatedTask = JSON.parse(localStorage.getItem("todos"));
+            updatedTask.push({
+                id: "task"+(updatedTask.length),
+                value: task,
+                completed: false
+            });
+            localStorage.setItem("todos", JSON.stringify(updatedTask));
             document.getElementById("todo-input").value = "";
             this.bindTodoData();
             this.removeTask();
             this.editTask();
-            // console.log(this.todoData)
         });
     }
 
     bindTodoData(){
+    //     <button class="func-btn">
+    //     <i class="fa fa-edit task-edit" id="task-edit-${index}"></i>
+    // </button>&nbsp;
+
         // if there is data in todoData array then bind to id="todo-display-data"
         let dataComp = [];
-        if(this.todoData.length > 0){
-            this.todoData.forEach((task, index) => {
+        let todoData = JSON.parse(localStorage.getItem("todos"));
+        if(todoData.length > 0){
+            todoData.forEach((task, index) => {
                 dataComp.push(`
-                    <li id="task-${index}">
-                        ${task}&nbsp; 
-                        <button class="func-btn">
-                            <i class="fa fa-edit task-edit" id="task-edit-${index}"></i>
-                        </button>&nbsp;
-                        <button class="func-btn">
-                            <i class="fa fa-remove task-remove" id="task-remove-${index}"></i>
-                        </button>
+                    <li id=${task.id}>
+                        <span class="text">    
+                            <input type="checkbox" class="complete-task" id="complete-${task.id}"/>
+                            <span class="task-edit" id="task-edit-${task.id}">${task.value}</span>
+                        </span> 
+                        <i class="fa fa-trash task-remove" id="task-remove-${index}"></i>
                     </li>`
                 )
             })
@@ -58,14 +76,36 @@ class Todo{
         document.querySelector("#todo-display-data").innerHTML = dataComp;        
     }
 
+
+    completedTask(){
+        const buttons = document.querySelectorAll(".complete-task");
+        for(let button of buttons){
+            button.addEventListener("click", (event) => {
+                let index = (event.target.id).replace("complete-task", "");
+                let updatedTask = JSON.parse(localStorage.getItem("todos"));
+                console.log(button.parentElement)
+                console.log(event.target.value)
+                if(event.target.value){
+                    button.parentElement.className += " completed";
+                    updatedTask[index].completed = true;
+                }else{
+                    button.parentElement.className.replace("completed", "");
+                    updatedTask[index].completed = false;
+                }
+                localStorage.setItem("todos", JSON.stringify(updatedTask));
+                this.bindTodoData();
+            })
+        }
+    }
+
     removeTask(){
         const removeButtons = document.querySelectorAll(".task-remove")
         for(let button of removeButtons){
             button.addEventListener("click", (event) => {
                 let index = (event.target.id).replace("task-remove-", "");
-                let updatedTask = this.todoData;
+                let updatedTask = JSON.parse(localStorage.getItem("todos"));
                 updatedTask.splice(index, 1);
-                this.todoData = updatedTask;
+                localStorage.setItem("todos", JSON.stringify(updatedTask));
                 this.bindTodoData();
             })    
         }
@@ -76,28 +116,32 @@ class Todo{
         const editButtons = document.querySelectorAll(".task-edit")
         for(let button of editButtons){
             button.addEventListener("click", (event) => {
-                let index = (event.target.id).replace("task-edit-", "");
-                // console.log("index ", index);
-                let value = this.todoData[index];
-                // console.log("value ", value);
-                document.getElementById("task-"+index).innerHTML = `
-                    <textarea cols="70" rows="2" id="task-update-text-${index}">${value}</textarea>
-                    <button class="func-btn">
-                        <i class="fa fa-check-circle task-update" id="task-update-${index}"></i>
-                    </button>
+                console.log("id ", event.target.id)
+                let index = (event.target.id).replace("task-edit-task", "");
+                console.log("index ", index);
+                let todoData = JSON.parse(localStorage.getItem("todos"));
+                let value = todoData[index].value;
+
+                document.getElementById("task-edit-task"+index).outerHTML = `
+                    <span id="update-task-${index}" class="update-task">
+                        <textarea cols="70" rows="2" id="task-update-text-${index}">${value}</textarea>
+                    </span>
                 `;
                 // now update a task
-                const taskUpdateButton = document.querySelector("#task-update-"+index)
-                    taskUpdateButton.addEventListener("click", (event) => {
-                        console.log("clicked");
-                        let index = (event.target.id).replace("task-update-", "");
+                document.querySelector("#update-task-"+index).addEventListener("keypress", event => {
+                    console.log("keyCode ",event.keyCode)
+                    if(event.keyCode === 13){
+                        let index = (event.target.id).replace("task-update-text-", "");
                         console.log("index ", index);
+
                         let value = document.getElementById("task-update-text-"+index).value;
                         console.log("value ", value);
-                        this.todoData[index] = value;
+                        todoData[index].value = value;
+                        localStorage.setItem("todos", JSON.stringify(todoData));
                         this.bindTodoData();
-                    })
-            })
+                    }        
+                })                
+            });
         }
     }
 }
@@ -107,5 +151,6 @@ todo.mainComponent();
 todo.bindTodoData();
 todo.removeTask();
 todo.editTask();
+todo.completedTask();
 
 var todoData = todo.todoData;
