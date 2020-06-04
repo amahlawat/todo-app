@@ -38,7 +38,7 @@ class Todo{
             let task = document.getElementById("todo-input").value;
             let updatedTask = JSON.parse(localStorage.getItem("todos"));
             updatedTask.push({
-                id: "task"+(updatedTask.length),
+                id: "task"+(updatedTask.length +1),
                 value: task,
                 completed: false
             });
@@ -60,10 +60,14 @@ class Todo{
         let todoData = JSON.parse(localStorage.getItem("todos"));
         if(todoData.length > 0){
             todoData.forEach((task, index) => {
+                let classes = "text";
+                classes += task.completed ? " completed": "";
+                let inputElement = task.completed ? '<input type="checkbox" checked  class="complete-task" id="complete-${task.id}"/>':
+                                    '<input type="checkbox"  class="complete-task" id="complete-${task.id}"/>'
                 dataComp.push(`
                     <li id=${task.id}>
-                        <span class="text">    
-                            <input type="checkbox" class="complete-task" id="complete-${task.id}"/>
+                        <span class="${classes}">    
+                            ${inputElement}
                             <span class="task-edit" id="task-edit-${task.id}">${task.value}</span>
                         </span> 
                         <i class="fa fa-trash task-remove" id="task-remove-${index}"></i>
@@ -83,15 +87,19 @@ class Todo{
             button.addEventListener("click", (event) => {
                 let index = (event.target.id).replace("complete-task", "");
                 let updatedTask = JSON.parse(localStorage.getItem("todos"));
-                console.log(button.parentElement)
-                console.log(event.target.value)
-                if(event.target.value){
-                    button.parentElement.className += " completed";
+                console.log("before ", button.parentElement.className)
+                console.log(event.target.checked)
+                if(event.target.checked){
+                    let btn = button.parentElement;
+                    // button.parentElement.className += " completed";
+                    // btn.classList.add("completed"); 
+                    btn.className+" completed";
                     updatedTask[index].completed = true;
                 }else{
                     button.parentElement.className.replace("completed", "");
                     updatedTask[index].completed = false;
                 }
+                console.log("after ", button.parentElement.className)
                 localStorage.setItem("todos", JSON.stringify(updatedTask));
                 this.bindTodoData();
             })
