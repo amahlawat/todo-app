@@ -27,9 +27,7 @@ class Todo{
                 <textarea cols="100" rows="3" id="todo-input" class="form--text"></textarea>              
                 <button class="form--btn" id="save-btn">Save</button>
             </div>
-            <div class="todo--data">
-                <ul id="todo-display-data" class="todo--display--data" />
-            </div>
+            <ul id="todo-display-data" class="todo--display--data" />
         </div>
         `;
         // bind click listener to save-btn
@@ -62,14 +60,14 @@ class Todo{
             todoData.forEach((task, index) => {
                 let classes = "text";
                 classes += task.completed ? " completed": "";
-                let inputElement = task.completed ? '<input type="checkbox" checked  class="complete-task" id="complete-${task.id}"/>':
-                                    '<input type="checkbox"  class="complete-task" id="complete-${task.id}"/>'
+                let inputElement = task.completed ? `<input type="checkbox" checked  class="complete-task" id="complete-${task.id}"/>`:
+                                    `<input type="checkbox"  class="complete-task" id="complete-${task.id}"/>`
                 dataComp.push(`
                     <li id=${task.id}>
-                        <span class="${classes}">    
+                        <div class="${classes}">    
                             ${inputElement}
                             <span class="task-edit" id="task-edit-${task.id}">${task.value}</span>
-                        </span> 
+                        </div> 
                         <i class="fa fa-trash task-remove" id="task-remove-${index}"></i>
                     </li>`
                 )
@@ -93,10 +91,10 @@ class Todo{
                     let btn = button.parentElement;
                     // button.parentElement.className += " completed";
                     // btn.classList.add("completed"); 
-                    btn.className+" completed";
+                    btn.className += " completed";
                     updatedTask[index].completed = true;
                 }else{
-                    button.parentElement.className.replace("completed", "");
+                    button.parentElement.className = button.parentElement.className.replace("completed", "");
                     updatedTask[index].completed = false;
                 }
                 console.log("after ", button.parentElement.className)
@@ -124,11 +122,19 @@ class Todo{
         const editButtons = document.querySelectorAll(".task-edit")
         for(let button of editButtons){
             button.addEventListener("click", (event) => {
-                console.log("id ", event.target.id)
-                let index = (event.target.id).replace("task-edit-task", "");
-                console.log("index ", index);
+                // console.log("id ", event.target.id)
+                // let index = (event.target.id)
+                // .replace("task-edit-task", "");
+                // console.log("index ", index);
+                let value = "";
+                let index = 0;
                 let todoData = JSON.parse(localStorage.getItem("todos"));
-                let value = todoData[index].value;
+                todoData.forEach((todo, index) => {
+                    if(todo.id === event.target.id){
+                        value = todo.value;
+                        index = index;
+                    }
+                })
 
                 document.getElementById("task-edit-task"+index).outerHTML = `
                     <span id="update-task-${index}" class="update-task">
@@ -144,7 +150,7 @@ class Todo{
 
                         let value = document.getElementById("task-update-text-"+index).value;
                         console.log("value ", value);
-                        todoData[index].value = value;
+                        todoData[index-1].value = value;
                         localStorage.setItem("todos", JSON.stringify(todoData));
                         this.bindTodoData();
                     }        

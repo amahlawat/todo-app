@@ -3,7 +3,7 @@
     padding-left: 250px;
     padding-right: 250px;
 }
-.input--section{
+.input--section {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -11,29 +11,34 @@
 .form--btn{
     margin-left: 20px;
 }
-.todo--data{
-    /* background: lightskyblue; */
-}
 .todo--display--data{
-    /* color: #fff; */
+    padding-left: 60px;
     list-style-type: none;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.todo--display--data li{
+    display: flex;
 }
 textarea{
     padding: 5px;
 }
 .main-heading, .heading-msg{
     color: #0062cc;
+    text-align: center;
 }
 .fa-edit{
     font-size:24px;
     color:chartreuse;
     cursor: pointer;
 }
+.fa-trash{
+    padding-top: 10px;
+}
 .form--btn{
     color: #fff;
     background-color: #0062cc;
-    height: 50px;
     width: 100px;
     border: solid 1px #005cbf;
 }
@@ -67,3 +72,10 @@ textarea{
         padding-right: 150px;
     }
 }
+/*  This applies from 0px to 425px */
+@media screen and (max-width:1000px){
+    .todo--display--data{
+        padding: 0px;
+    }
+}
+
